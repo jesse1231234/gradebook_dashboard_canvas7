@@ -371,8 +371,8 @@ def show_welcome():
     placeholder = st.empty()
     with placeholder.container():
         st.markdown('<div class="welcome-wrap"><div class="welcome">Welcome to the CSU Online Analytics Dashboard!</div></div>', unsafe_allow_html=True)
-        st.markdown('<div style="text-align:center;"><button class="ghost-btn" onclick="window.parent.postMessage({type:\'st_click\'}, \'*\')">Click to continue</button></div>', unsafe_allow_html=True)
-    clicked = st.button("Continue ▶️", type="primary")
+        st.markdown('<div style="text-align:center;">&nbsp;</div>', unsafe_allow_html=True)
+    clicked = st.button("Continue ▶️", type="primary", use_container_width=True)
     if clicked:
         st.session_state.stage = "gradebook"
         safe_rerun()
