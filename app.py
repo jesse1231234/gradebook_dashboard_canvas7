@@ -16,6 +16,17 @@ from openpyxl.styles import PatternFill
 
 st.set_page_config(page_title="CSU Online Analytics Dashboard", page_icon="🎓", layout="wide")
 
+# --- safe rerun helper ---
+def safe_rerun():
+    try:
+        st.rerun()
+    except Exception:
+        try:
+            safe_rerun()
+        except Exception:
+            pass
+
+
 # ========================= Branding Persistence =========================
 BRAND_FILE = "branding.json"
 ASSETS_DIR = "assets"
@@ -364,12 +375,12 @@ def show_welcome():
     clicked = st.button("Continue ▶️", type="primary")
     if clicked:
         st.session_state.stage = "gradebook"
-        st.experimental_rerun()
+        safe_rerun()
     if st.session_state.welcome_started is None:
         st.session_state.welcome_started = time.time()
     elif time.time() - st.session_state.welcome_started >= 5:
         st.session_state.stage = "gradebook"
-        st.experimental_rerun()
+        safe_rerun()
 
 def show_gradebook_prompt():
     progress_ui(2)
@@ -378,7 +389,7 @@ def show_gradebook_prompt():
     if gb is not None:
         st.session_state.gb_file = gb.getvalue()
         st.session_state.stage = "echo"
-        st.experimental_rerun()
+        safe_rerun()
 
 def show_echo_prompt():
     progress_ui(3)
@@ -387,7 +398,7 @@ def show_echo_prompt():
     if ec is not None:
         st.session_state.echo_file = ec.getvalue()
         st.session_state.stage = "dashboard"
-        st.experimental_rerun()
+        safe_rerun()
 
 # ========================= Render by stage =========================
 if st.session_state.stage == "welcome":
